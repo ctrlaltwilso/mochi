@@ -1,0 +1,21 @@
+# PlatformIO build output and downloaded libraries
+.pio/
+
+# Python virtualenv
+.venv/
+
+# clangd: generated compile database and index cache
+compile_commands.json
+.cache/
+
+# Editor settings (PlatformIO regenerates these)
+.vscode/
+
+# macOS
+.DS_Store
+
+# Secrets: keep WiFi passwords, API keys, etc. out of the public repo
+secrets.h
+include/secrets.h
+src/secrets.h
+.env
