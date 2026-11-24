@@ -1,7 +1,11 @@
 #include <M5Unified.h>
+#include <banner.h>
 #include <cloud.h>
+#include <sys/_types.h>
 
 M5Canvas canvas(&M5.Display); // off-screen canvas
+
+constexpr unsigned long FRAME_MS = 1000 / 15;
 
 void setup() {
 
@@ -18,6 +22,8 @@ void setup() {
 }
 
 void loop() {
+  unsigned long frameStart = millis();
+
   M5.update();
 
   if (M5.BtnA.wasPressed()) {
@@ -31,4 +37,12 @@ void loop() {
     delay(3000);
   }
   drawCloud(canvas);
+  drawBanner(canvas);
+  canvas.pushSprite(0, 0);
+
+  // Set fps
+  unsigned long elapsed = millis();
+  if (elapsed < FRAME_MS) {
+    delay(FRAME_MS - elapsed);
+  }
 }

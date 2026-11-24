@@ -77,5 +77,4 @@ void drawCloud(M5Canvas &canvas) {
 
   canvas.fillScreen(BG);
   canvas.drawPng(img, len, x, y, 0, 0, 0, 0, scaleX, scaleY);
-  canvas.pushSprite(0, 0);
 }
