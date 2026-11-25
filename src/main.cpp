@@ -10,6 +10,8 @@ constexpr unsigned long FRAME_MS = 1000 / 15;
 void setup() {
 
   M5.begin(); // runs at boot
+  M5.Display.setBrightness(80);
+  setCpuFrequencyMhz(160);
 
   // Portrait, set before drawing anything
   M5.Display.setRotation(0);
@@ -18,7 +20,8 @@ void setup() {
   // Create Canvas for render off screen
   canvas.createSprite(M5.Display.width(), M5.Display.height());
 
-  drawCloud(canvas);
+  cloudInit();
+  bannerInit();
 }
 
 void loop() {
@@ -41,7 +44,7 @@ void loop() {
   canvas.pushSprite(0, 0);
 
   // Set fps
-  unsigned long elapsed = millis();
+  unsigned long elapsed = millis() - frameStart;
   if (elapsed < FRAME_MS) {
     delay(FRAME_MS - elapsed);
   }

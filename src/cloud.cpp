@@ -3,6 +3,14 @@
 #include "cloud_png.h"
 #include <cloud.h>
 
+// Cloud canvas
+M5Canvas cloudSprite;
+M5Canvas cloudEyeSprite;
+M5Canvas cloudClosedSprite;
+
+constexpr unsigned int CLOUD_W = 30;
+constexpr unsigned int CLOUD_H = 17;
+
 // Cloud Peeking
 constexpr unsigned long PEEK_MS = 1000;
 constexpr unsigned long BLINK_TRANSITION_MS = 80;
@@ -23,6 +31,20 @@ constexpr float EXHALE_S = 6.0;
 constexpr float FLOAT_PERIOD_S = 4.0;
 constexpr int FLOAT_AMPLITUDE = 10;
 
+void cloudInit() {
+  cloudSprite.createSprite(CLOUD_W, CLOUD_H);
+  cloudSprite.fillScreen(TFT_TRANSPARENT);
+  cloudSprite.drawPng(cloud_png, cloud_png_len);
+
+  cloudEyeSprite.createSprite(CLOUD_W, CLOUD_H);
+  cloudEyeSprite.fillScreen(TFT_TRANSPARENT);
+  cloudEyeSprite.drawPng(cloud_eye_png, cloud_eye_png_len);
+
+  cloudClosedSprite.createSprite(CLOUD_W, CLOUD_H);
+  cloudClosedSprite.fillScreen(TFT_TRANSPARENT);
+  cloudClosedSprite.drawPng(cloud_closed_png, cloud_closed_png_len);
+}
+
 float breathAmount(float t) {
   float phase = fmod(t, INHALE_S + EXHALE_S); // seconds into current breath
 
@@ -35,6 +57,7 @@ float breathAmount(float t) {
   }
 }
 void drawCloud(M5Canvas &canvas) {
+  M5Canvas *sprite = &cloudSprite;
 
   float t = millis() / 1000.0;
   float floatWave = sin(t * 2 * PI / FLOAT_PERIOD_S);
@@ -44,14 +67,10 @@ void drawCloud(M5Canvas &canvas) {
   float scaleX = BASE_SCALE + breath * BREATH_X;
   float scaleY = BASE_SCALE + breath * BREATH_Y;
 
-  // Current size on screen
-  int w = 30 * scaleX;
-  int h = 17 * scaleY;
-
   // Position
-  int x = (M5.Display.width() - w) / 2;
-  int baseY = (M5.Display.height() - h) / 2;
-  int y = baseY + floatWave * FLOAT_AMPLITUDE;
+  float x = canvas.width() / 2.0f;
+  float baseY = canvas.height() / 2.0f;
+  float y = baseY + floatWave * FLOAT_AMPLITUDE;
 
   unsigned long now = millis();
   if (now >= nextPeekAt) {
@@ -61,20 +80,14 @@ void drawCloud(M5Canvas &canvas) {
 
   unsigned long elapsed = now - peekStartedAt;
 
-  const unsigned char *img = cloud_png; // default: happy eyes
-  unsigned int len = cloud_png_len;
-
   if (elapsed < BLINK_TRANSITION_MS) {
-    img = cloud_closed_png;
-    len = cloud_closed_png_len;
+    sprite = &cloudClosedSprite;
   } else if (elapsed < BLINK_TRANSITION_MS + PEEK_MS) {
-    img = cloud_eye_png;
-    len = cloud_eye_png_len;
+    sprite = &cloudEyeSprite;
   } else if (elapsed < BLINK_TRANSITION_MS * 2 + PEEK_MS) {
-    img = cloud_closed_png;
-    len = cloud_closed_png_len;
+    sprite = &cloudClosedSprite;
   }
 
   canvas.fillScreen(BG);
-  canvas.drawPng(img, len, x, y, 0, 0, 0, 0, scaleX, scaleY);
+  sprite->pushRotateZoom(&canvas, x, y, 0, scaleX, scaleY, TFT_TRANSPARENT);
 }

@@ -1,16 +1,22 @@
 #include <battery.h>
 
-// Cycle Time
-constexpr unsigned long CHECK_INTERVAL_MS = 10000;
+// Battery Level
+constexpr unsigned long BATTERY_CHECK_MS = 10000;
 unsigned long nextCheckAt = 0;
 int battery = -1;
 float smoothed = 0;
+
+// Charging
+constexpr unsigned long PLUGGED_CHECK_MS = 1000;
+constexpr int USB_PRESENT_MV = 4000;
+unsigned long nextPluggedInCheckAt = 0;
+bool pluggedIn = false;
 
 int batteryLevel() {
   unsigned long now = millis();
 
   if (now >= nextCheckAt) {
-    nextCheckAt = now + CHECK_INTERVAL_MS;
+    nextCheckAt = now + BATTERY_CHECK_MS;
 
     if (battery < 0) {
       battery = M5.Power.getBatteryLevel();
@@ -26,4 +32,18 @@ int batteryLevel() {
   }
 
   return battery;
+}
+
+bool isPluggedIn() {
+  unsigned long now = millis();
+
+  if (now >= nextPluggedInCheckAt) {
+    nextPluggedInCheckAt = now + PLUGGED_CHECK_MS;
+
+    int voltage = M5.Power.getVBUSVoltage();
+
+    pluggedIn = voltage > USB_PRESENT_MV;
+  }
+
+  return pluggedIn;
 }
