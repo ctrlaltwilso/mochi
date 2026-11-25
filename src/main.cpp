@@ -1,6 +1,7 @@
 #include <M5Unified.h>
 #include <banner.h>
 #include <cloud.h>
+#include <idle.h>
 #include <sys/_types.h>
 
 M5Canvas canvas(&M5.Display); // off-screen canvas
@@ -28,6 +29,7 @@ void loop() {
   unsigned long frameStart = millis();
 
   M5.update();
+  idleUpdate();
 
   if (M5.BtnA.wasPressed()) {
     unsigned long chipTime = millis() / 1000;
@@ -39,9 +41,12 @@ void loop() {
     M5.Display.printf("Chip time: %lu\n", chipTime);
     delay(3000);
   }
-  drawCloud(canvas);
-  drawBanner(canvas);
-  canvas.pushSprite(0, 0);
+
+  if (isAwake()) {
+    drawCloud(canvas);
+    drawBanner(canvas);
+    canvas.pushSprite(0, 0);
+  }
 
   // Set fps
   unsigned long elapsed = millis() - frameStart;
