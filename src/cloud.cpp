@@ -4,32 +4,32 @@
 #include <cloud.h>
 
 // Cloud canvas
-M5Canvas cloudSprite;
-M5Canvas cloudEyeSprite;
-M5Canvas cloudClosedSprite;
+static M5Canvas cloudSprite;
+static M5Canvas cloudEyeSprite;
+static M5Canvas cloudClosedSprite;
 
-constexpr unsigned int CLOUD_W = 30;
-constexpr unsigned int CLOUD_H = 17;
+static constexpr unsigned int CLOUD_W = 30;
+static constexpr unsigned int CLOUD_H = 17;
 
 // Cloud Peeking
-constexpr unsigned long PEEK_MS = 1000;
-constexpr unsigned long BLINK_TRANSITION_MS = 80;
-unsigned long peekStartedAt = 0;
-unsigned long nextPeekAt = 5000;
+static constexpr unsigned long PEEK_MS = 1000;
+static constexpr unsigned long BLINK_TRANSITION_MS = 80;
+static unsigned long peekStartedAt = 0;
+static unsigned long nextPeekAt = 5000;
 
 // Day time
-constexpr uint16_t BG = lgfx::color565(110, 160, 220);
+static constexpr uint16_t BG = lgfx::color565(110, 160, 220);
 
 // Cloud Breathing
-constexpr float BASE_SCALE = 3.0;
-constexpr float BREATH_X = 0.15;
-constexpr float BREATH_Y = 0.40;
-constexpr float INHALE_S = 4.0;
-constexpr float EXHALE_S = 6.0;
+static constexpr float BASE_SCALE = 3.0;
+static constexpr float BREATH_X = 0.15;
+static constexpr float BREATH_Y = 0.40;
+static constexpr float INHALE_S = 4.0;
+static constexpr float EXHALE_S = 6.0;
 
 // Cloud Movement
-constexpr float FLOAT_PERIOD_S = 4.0;
-constexpr int FLOAT_AMPLITUDE = 10;
+static constexpr float FLOAT_PERIOD_S = 4.0;
+static constexpr int FLOAT_AMPLITUDE = 10;
 
 void cloudInit() {
   cloudSprite.createSprite(CLOUD_W, CLOUD_H);
@@ -45,7 +45,7 @@ void cloudInit() {
   cloudClosedSprite.drawPng(cloud_closed_png, cloud_closed_png_len);
 }
 
-float breathAmount(float t) {
+static float breathAmount(float t) {
   float phase = fmod(t, INHALE_S + EXHALE_S); // seconds into current breath
 
   if (phase < INHALE_S) {

@@ -1,16 +1,16 @@
 #include <battery.h>
 
 // Battery Level
-constexpr unsigned long BATTERY_CHECK_MS = 10000;
-unsigned long nextCheckAt = 0;
-int battery = -1;
-float smoothed = 0;
+static constexpr unsigned long BATTERY_CHECK_MS = 10000;
+static unsigned long nextCheckAt = 0;
+static int battery = -1;
+static float smoothed = 0;
 
 // Charging
-constexpr unsigned long PLUGGED_CHECK_MS = 1000;
-constexpr int USB_PRESENT_MV = 4000;
-unsigned long nextPluggedInCheckAt = 0;
-bool pluggedIn = false;
+static constexpr unsigned long PLUGGED_CHECK_MS = 1000;
+static constexpr int USB_PRESENT_MV = 4000;
+static unsigned long nextPluggedInCheckAt = 0;
+static bool pluggedIn = false;
 
 int batteryLevel() {
   unsigned long now = millis();

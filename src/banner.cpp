@@ -2,14 +2,14 @@
 #include <battery.h>
 #include <lightning_png.h>
 
-M5Canvas lightningSprite;
+static M5Canvas lightningSprite;
 
-constexpr unsigned int LIGHTNING_W = 5;
-constexpr unsigned int LIGHTNING_H = 8;
-constexpr int BOLT_SCALE = 2;
+static constexpr unsigned int LIGHTNING_W = 5;
+static constexpr unsigned int LIGHTNING_H = 8;
+static constexpr int BOLT_SCALE = 2;
 
-constexpr uint16_t BANNER_BG = lgfx::color565(200, 170, 230);
-constexpr uint16_t BANNER_FG = lgfx::color565(30, 50, 100);
+static constexpr uint16_t BANNER_BG = lgfx::color565(200, 170, 230);
+static constexpr uint16_t BANNER_FG = lgfx::color565(30, 50, 100);
 
 void bannerInit() {
   lightningSprite.createSprite(LIGHTNING_W, LIGHTNING_H);
