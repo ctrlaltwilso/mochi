@@ -28,8 +28,8 @@ int batteryLevel() {
       if (newReading >= 0) {
         smoothed = smoothed * 0.8 + newReading * 0.2;
 
-        // Battery level only increases while pluggedIn
-        if ((smoothed < battery && plugged) ||
+        // Display only drops on battery and only rises while plugged in
+        if ((smoothed < battery && !plugged) ||
             (smoothed > battery && plugged)) {
           battery = smoothed;
         }
