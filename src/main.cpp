@@ -29,9 +29,9 @@ void loop() {
   unsigned long frameStart = millis();
 
   M5.update();
-  idleUpdate();
+  bool justWoke = idleUpdate();
 
-  if (M5.BtnA.wasPressed()) {
+  if (M5.BtnA.wasPressed() && !justWoke) {
     unsigned long chipTime = millis() / 1000;
 
     M5.Display.fillScreen(TFT_BLUE);

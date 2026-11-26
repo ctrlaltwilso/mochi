@@ -25,7 +25,7 @@ static bool anyButtonPressed() {
   return false;
 }
 
-void idleUpdate() {
+bool idleUpdate() {
   unsigned long now = millis();
   bool buttonPressed = anyButtonPressed();
 
@@ -33,10 +33,13 @@ void idleUpdate() {
     lastActivityAt = now;
     if (screenAsleep) {
       wakeScreen();
+      return true;
     }
   }
 
   if (!screenAsleep && (now - lastActivityAt >= IDLE_TIMEOUT_MS)) {
     sleepScreen();
   }
+
+  return false;
 }

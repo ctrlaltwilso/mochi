@@ -1,5 +1,5 @@
 #pragma once
 #include <M5Unified.h>
 
-void idleUpdate();
+bool idleUpdate();
 bool isAwake();
