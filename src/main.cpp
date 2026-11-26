@@ -9,6 +9,7 @@ constexpr unsigned long FRAME_MS = 1000 / 15;
 
 void setup() {
 
+  Serial.begin(115200);
   M5.begin(); // runs at boot
   M5.Display.setBrightness(80);
   setCpuFrequencyMhz(160);

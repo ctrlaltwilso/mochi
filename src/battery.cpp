@@ -17,16 +17,22 @@ int batteryLevel() {
 
   if (now >= nextCheckAt) {
     nextCheckAt = now + BATTERY_CHECK_MS;
+    int newReading = M5.Power.getBatteryLevel();
+    bool pluggedIn = isPluggedIn();
 
     if (battery < 0) {
-      battery = M5.Power.getBatteryLevel();
+      battery = newReading;
       smoothed = battery;
     } else {
-      int newReading = M5.Power.getBatteryLevel();
 
       if (newReading >= 0) {
         smoothed = smoothed * 0.8 + newReading * 0.2;
-        battery = smoothed;
+
+        // Battery level only increases while pluggedIn
+        if ((smoothed < battery && pluggedIn) ||
+            (smoothed > battery && pluggedIn)) {
+          battery = smoothed;
+        }
       }
     }
   }
