@@ -3,7 +3,7 @@
 #   assets/cloud-eye.png -> src/cloud_eye_png.h (variable: cloud_eye_png)
 # Requires xxd (preinstalled on macOS and most Linux distros)
 set -euo pipefail
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/.."
 
 for png in assets/*.png; do
   name=$(basename "$png" .png | tr '-' '_')_png
