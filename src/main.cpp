@@ -2,7 +2,6 @@
 #include <banner.h>
 #include <cloud.h>
 #include <idle.h>
-#include <sys/_types.h>
 
 M5Canvas canvas(&M5.Display); // off-screen canvas
 
